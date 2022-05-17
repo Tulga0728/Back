@@ -1,0 +1,10 @@
+GIN_MODE: "debug"
+PORT: "8080"
+
+TIMEZONE: "Asia/Ulaanbaatar"
+
+DB_HOST: "172.28.16.1"
+DB_PORT: "5432"
+DB_NAME: "hackaton"
+DB_USER: "fibo"
+DB_PASSWORD: "fibo123"

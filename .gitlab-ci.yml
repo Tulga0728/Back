@@ -1,0 +1,16 @@
+stages:
+  - run
+
+main:
+  only:
+    - master
+  stage: run
+  script:
+    - sudo docker login registry.fibo.cloud -p ${DOCKER_PWD} -u ${DOCKER_USERNAME}
+    - sudo docker build -t registry.fibo.cloud/virtualsex/crm/back .
+    - sudo docker push registry.fibo.cloud/virtualsex/crm/back
+    - sudo docker ps --quiet --filter="name=virtualsex-crm-back" | xargs --no-run-if-empty docker rm -f
+    - sudo docker run -dt -p 8482:8082 --restart always --name virtualsex-crm-back registry.fibo.cloud/virtualsex/crm/back
+    # - sudo docker image prune -f
+  tags:
+    - virtual-sex-prod

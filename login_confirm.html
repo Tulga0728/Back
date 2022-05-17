@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Email Confirmation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: "Nunito Sans", sans-serif !important;
+            color: #514d6a;
+            line-height: 1.7;
+        }
+
+        .card {
+            margin-bottom: 2.3rem;
+            border-radius: 7px;
+            position: relative;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border-radius: .25rem;
+        }
+
+        .card-header:first-child,
+        .card-footer:first-child {
+            border-radius: calc(7px - 1px) calc(7px - 1px) 0 0;
+        }
+
+        .card-body {
+            -webkit-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.92rem 2.3rem;
+        }
+
+        .row {
+            margin-left: -1.16rem;
+            margin-right: -1.16rem;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .col-lg-12 {
+            padding-right: 1.15rem;
+        }
+
+        @media (min-width: 992px) {
+            .col-lg-12 {
+                -webkit-flex: 0 0 100%;
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
+        .text-black {
+            color: #0e0b20;
+        }
+
+        .mb-5,
+        .my-5 {
+            margin-bottom: 3rem !important;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mb-5">
+                        <div width="100%" style="background: #eceff4; padding: 50px 20px ;color: #514d6a">
+                            <div style="max-width: 700px; margin: 0px auto; font-size: 14px">
+                                <table cellPadding="0" cellSpacing="0"
+                                    style="width: 100%; margin-bottom:20px; border: 0px">
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: center; vertical-align:top"> <img
+                                                    src="https://ics-resources.s3.ap-east-1.amazonaws.com/cyberlogo.png"
+                                                    alt="ICS Logo" style=" height: 120px " /> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="padding: 40px 40px 20px 40px; background: #fff; border-radius: 50px;">
+                                    <table cellPadding="0" cellSpacing="0" style=" width: 100%; border:0px">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <h5
+                                                        style="margin-bottom: 20px;                                    color: #24222f;                                    font-weight: 600;                                    font-size: 1.25rem;                                  ">
+                                                        Сайн байна уу. </h5>
+                                                        
+                                                    <p>    <b style="font-size: 16px">OnlineSOS системд</b> та дараах кодоор {{ confirm_code }} нэвтрэх боломжтой. </p>
+                                                    <div style="text-align: center "> <a
+                                                            target="_blank"
+                                                            href="https://onlinesos.mn"
+                                                            style="                                      display: inline-block;                                      padding: 11px 30px 6px;                                      margin: 20px 0px 30px;                                      font-size: 15px;                                      color: #fff;                                      background: #01a8fe;                                      border-radius: 5px;                                      text-decoration: none;                                    ">
+                                                            Нэвтрэх </a> </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+</body>
+
+</html>

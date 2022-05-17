@@ -1,0 +1,10 @@
+/docs
+build
+mcc-api
+swagger.zip
+.git
+.gitignore
+backend
+go.sum
+swagger
+lastupdate.tmp

@@ -1,0 +1,40 @@
+version: "3.6"
+services:
+  postgres_db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=hackaton
+      - POSTGRES_USER=fibo
+      - POSTGRES_PASSWORD=fibo123
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  # backend:
+  #   image: registry.fibo.cloud/university/backend
+  #   restart: always
+  #   environment:
+  #     - DB_HOST=postgres_db
+  #     - DB_PORT=5432
+  #     - DB_NAME=citi
+  #     - DB_USER=fibo
+  #     - DB_PASSWORD=fibo123
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - postgres_db
+
+  # admin:
+  #   image: registry.fibo.cloud/university/admin
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #   environment:
+  #     - BACK_URL=http://103.50.204.29:8080/api/v1
+  #   depends_on:
+  #     - backend
+
+volumes:
+  db-data:
