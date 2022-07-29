@@ -1,0 +1,123 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Чимэгэ API",
+    "description" : "# Танилцуулга\nУг API-г ашиглахдаа нэг /sa/pushAudio endpoint-руу нэг нэгээр Audio-г явуулах бөгөөд /sa/getTranscribed endpoint-оос тухайн үед хөрвүүлэгдээд дууссан бүх текстийг авах боломжтой.\nТухайн хөрвүүлсэн текстийг нэг удаа авсны дараа устах тул дахин авах боломжгүйг анхаарна уу.\n",
+    "contact" : {
+      "name" : "Холбоо барих",
+      "url" : "https://chimege.mn",
+      "email" : "info@chimege.mn"
+    }
+  },
+  "servers" : [ {
+    "url" : "https://api.chimege.com/v1.2",
+    "description" : "Сервер"
+  } ],
+  "tags" : [ {
+    "name" : "writer",
+    "description" : "Их хэмжээний аудиог бичвэр болгоно.\n",
+    "x-displayName" : "Аудиог бичвэр рүү хөрвүүлэх"
+  } ],
+  "paths" : {
+    "/sa/pushAudio" : {
+      "post" : {
+        "tags" : [ "Аудио нэмэх" ],
+        "summary" : "Аудиог хүлээн авч боловсруулах",
+        "description" : "Аудио явуулаад түлхүүр тэмдэгт мөр авна.\n",
+        "operationId" : "writer",
+        "requestBody" : {
+          "description" : "Аудио файл авна.",
+          "content" : {
+            "audio/wav" : {
+              "schema" : {
+                "type" : "string",
+                "format" : "binary"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Хөрвүүлсэн текстийг буцаан авахад ашиглах түлхүүр тэмдэгт мөр",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Тодорхойгүй алдаа"
+          }
+        },
+        "x-codeSamples" : [ {
+          "lang" : "Python",
+          "source" : "import requests\n\ndef pushAudio(filename):\n    with open(filename, 'rb') as f:\n        audio = f.read()\n\n    url = \"https://api.chimege.com/v1.2/sa/pushAudio\"\n    headers = {\n        'Content-Type': 'application/octet-stream',\n        'Token': 'API_TOKEN',\n    }\n\n    r = requests.post(\n        url, data=audio, headers=headers)\n\n    return r.json()\n\n\nprint(pushAudio('input.wav')[\"key\"])\n"
+        }, {
+          "lang" : "Go",
+          "source" : "package main\n\nimport (\n  \"bytes\"\n  \"encoding/json\"\n  \"io/ioutil\"\n  \"log\"\n  \"net/http\"\n)\n\ntype response struct {\n  Key string `json:\"key\"`\n}\n\nfunc pushAudio(filename string) string {\n  data, _ := ioutil.ReadFile(filename)\n\n  req, _ := http.NewRequest(\n    \"POST\",\n    \"https://api.chimege.com/v1.2/sa/pushAudio\",\n    bytes.NewBuffer(data),\n  )\n\n  req.Header.Set(\"Content-Type\", \"application/octet-stream\")\n  req.Header.Set(\"token\", \"API_TOKEN\")\n\n  resp, err := http.DefaultClient.Do(req)\n  if err != nil {\n    log.Fatal(err)\n  }\n  defer resp.Body.Close()\n\n  body, _ := ioutil.ReadAll(resp.Body)\n  var b response\n  _ = json.Unmarshal(body, &b)\n  return b.Key\n}\n\nfunc main() {\n  log.Println(pushAudio(\"input.wav\"))\n}\n"
+        } ]
+      }
+    },
+    "/sa/getTranscribed" : {
+      "get" : {
+        "tags" : [ "Хөрвүүлснийг авах" ],
+        "summary" : "Хөрвүүлэгдээд дууссан текстийг авах",
+        "description" : "Түлхүүр тэмдэгтийг явуулаад аудиог хөрвүүлсэн текстийг авна.\n",
+        "operationId" : "writer",
+        "responses" : {
+          "200" : {
+            "description" : "Хөрвүүлсэн текст",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_1"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Тодорхойгүй алдаа"
+          }
+        },
+        "x-codeSamples" : [ {
+          "lang" : "Python",
+          "source" : "import requests\n def getTranscribed():\n     url = \"https://api.chimege.com/v1.2/sa/getTranscribed\"\n     headers = {\n         'Token': 'API_TOKEN',\n     }\n     r = requests.get(url,  headers=headers)\n\n     if r.status_code != 200:\n         return \"Unknown error occurred\"\n\n     print(r.status_code)\n     return r.json()\n\n resp = getTranscribed()\n\n if isinstance(resp, str):\n     print(\"Error Occurred: \", resp)\n else: \n     for text in resp:\n         print(text['key'], \": \", text['text'])\n"
+        }, {
+          "lang" : "Go",
+          "source" : "package main\n\nimport (\n  \"encoding/json\"\n  \"errors\"\n  \"fmt\"\n  \"log\"\n  \"net/http\"\n)\n\ntype TranscribedText struct {\n  Text string `json:\"text\"`\n  Key  string `json:\"key\"`\n}\n\nfunc getOutputText() ([]TranscribedText, error) {\n  req, _ := http.NewRequest(\n    \"GET\",\n    fmt.Sprintf(\"https://api.chimege.com/v1.2/sa/getTranscribed\"),\n    nil,\n  )\n\n  req.Header.Set(\"token\", \"API_TOKEN\")\n\n  resp, err := http.DefaultClient.Do(req)\n  if err != nil {\n    return nil, err\n  }\n  defer resp.Body.Close()\n\n  var response []TranscribedText\n  if resp.StatusCode != 200 {\n    return nil, errors.New(\"Sorry unknown error occurred\")\n  }\n\n  if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {\n    return nil, err\n  }\n\n  return response, nil\n}\n\nfunc main() {\n  texts, err := getOutputText()\n  if err != nil {\n    log.Fatal(err)\n    return\n  }\n  for _, text := range texts {\n    log.Println(text.Key, \": \", text.Text)\n  }\n}"
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string",
+            "description" : "Аудионд харгалзах түлхүүр тэмдэгт мөр"
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string",
+            "description" : "Аудиог илгээхэд"
+          },
+          "text" : {
+            "type" : "string",
+            "description" : "Аудиог хөрвүүлсэн текст"
+          }
+        }
+      }
+    }
+  }
+}
